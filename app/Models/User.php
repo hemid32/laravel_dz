@@ -57,4 +57,9 @@ implements JWTSubject{
     {
         return [];
     }
+  public function point(){
+        return $this->belongsTo(Point::class, 'id', 'id_user');
+
+    }
+
 }

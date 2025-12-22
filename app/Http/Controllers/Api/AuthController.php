@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Point;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,7 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         try {
-        $request->validate([
+         $request->validate([
             'name'     => 'required|string',
             'email'    => 'required|email|unique:users',
             'password' => 'required|min:6',
@@ -28,6 +29,14 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $point = Point::create(
+            [
+                'id_user' => $user->id , 
+                 'point' => 0 
+                 
+            ]
+        ) ; 
+
         $token = JWTAuth::fromUser($user);
 
         return $this->returnData('data',[
@@ -35,8 +44,8 @@ class AuthController extends Controller
             'token' => $token
         ],
       'Registered successfully');
-    }catch(Exception $e){
-        require $this->returnError('data' , $e->getMessage()) ; 
+    }catch (Exception $e) {
+        return $this->returnError('data' , $e->getMessage()) ; 
      }
     
     }
@@ -51,14 +60,16 @@ class AuthController extends Controller
 
         return $this->returnData( 'data ',[
             'token' => $token,
-            'type'  => 'bearer',
-           // 'expires_in' => JWTAuth::factory()->getTTL() * 60
+            'user'  => auth('api')->user(),
+           //'expires_in' => JWTAuth::factory()->getTTL() * 60
         ], 'Login successful');
     }
 
     public function me()
     {
-        return $this->returnData('data',auth('api')->user(), 'User profile');
+        $user = User::with('point')->find(auth('api')->id());
+
+        return $this->returnData('data',$user, 'User profile');
     }
 
     public function logout()
