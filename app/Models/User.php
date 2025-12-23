@@ -21,6 +21,7 @@ implements JWTSubject{
      */
     protected $fillable = [
         'name',
+        'type' ,  
         'email',
         'password',
     ];
