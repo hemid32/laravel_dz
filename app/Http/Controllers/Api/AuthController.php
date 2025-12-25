@@ -26,6 +26,7 @@ class AuthController extends Controller
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
+            'type' => $request->type  ,  
             'password' => Hash::make($request->password),
         ]);
 
@@ -45,7 +46,7 @@ class AuthController extends Controller
         ],
       'Registered successfully');
     }catch (Exception $e) {
-        return $this->returnError('data' , $e->getMessage()) ; 
+        return $this->returnError('505' , $e->getMessage()) ; 
      }
     
     }
@@ -55,12 +56,12 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (! $token = auth()->guard('api')->attempt($credentials)) {
-            return $this->returnError('401','Invalid credential');
+            return $this->returnError('401','معلومات تسجيل الدخول غير صحيحة');
         }
 
-        return $this->returnData( 'data ',[
+        return $this->returnData( 'data',[
             'token' => $token,
-            'user'  => auth('api')->user(),
+            'user'  => User::with('point')->find(auth('api')->id()),
            //'expires_in' => JWTAuth::factory()->getTTL() * 60
         ], 'Login successful');
     }
@@ -69,7 +70,12 @@ class AuthController extends Controller
     {
         $user = User::with('point')->find(auth('api')->id());
 
+        if($user) {
+
         return $this->returnData('data',$user, 'User profile');
+        }else {
+            return $this->returnError('401' , '401 Unauthorized') ;  
+        }
     }
 
     public function logout()

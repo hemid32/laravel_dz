@@ -2,12 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Traits\GeneralTrait;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiKeyMiddleware
 {
+    use GeneralTrait ; 
     /**
      * Handle an incoming request.
      *
@@ -20,10 +22,7 @@ class ApiKeyMiddleware
         $apiKey = $request->header('X-API-KEY');
 
         if (! $apiKey || $apiKey !== config('app.api_key')) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Unauthorized (Invalid API Key)'
-            ], 403);
+            return  $this->returnError(403 , 'Unauthorized (Invalid API Key)');
         }
         return $next($request);
     }
