@@ -18,6 +18,9 @@ Route::group([
 ], function ($router) {
 
     Route::post('login',[AuthController::class , 'login']);
+    //updateProfile
+    Route::post('updateprofile',[AuthController::class , 'updateProfile']);
+
     Route::post('logout', [AuthController::class , 'logout']);
     Route::post('register', [AuthController::class , 'register']);
     Route::post('refresh', 'AuthController@refresh');
