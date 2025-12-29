@@ -5,14 +5,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\users\UserController;
-
+use App\Http\Middleware\ApiKeyMiddleware;
 
 Route::get('/users', [UserController::class , 'testApi']);
 
 
 Route::group([
 
-    'middleware' => 'api',
+    'middleware' => 'api-require',
     'prefix' => 'auth'
 
 ], function ($router) {
