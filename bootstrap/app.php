@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\ApiKeyMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,8 +16,14 @@ return Application::configure(basePath: dirname(__DIR__))
              //$middleware->append(ApiKeyMiddleware::class);
                 $middleware->appendToGroup('api-require', [
         ApiKeyMiddleware::class,
+        
     ]);
  
+
+    $middleware->appendToGroup('admin-require', [
+        AdminMiddleware::class,
+        
+    ]);
 
         //
     })
