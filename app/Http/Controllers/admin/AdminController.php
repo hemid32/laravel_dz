@@ -1,7 +1,9 @@
 <?php 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Models\typecourse;
 use App\Traits\GeneralTrait;
+use Exception;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -57,6 +59,47 @@ public function login(Request $request)
 
 
 }
+
+
+public function typecourse(){
+
+    return view('admin/typecourse') ;  
+}
+
+
+
+public function typesave(Request $request){
+     try {
+
+
+           
+           $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+
+       $imagePath = $request->file('image')->store('courses', 'public');
+        Typecourse::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()->back()->with('message', 'Type courses saved successfully');
+    //return redirect()->route('admin.dashboard');
+    }catch(Exception $e){
+
+        return redirect()->back()->with('message', $e->getMessage());
+
+
+    }
+
+}
+
+
+
+
 
 
 }

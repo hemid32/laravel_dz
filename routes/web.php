@@ -25,6 +25,11 @@ Route::group([
 Route::get('/logout', [AdminController::class , 'logout'])->name('logout');
 
 
+Route::get('/typecourse', [AdminController::class , 'typecourse'])->name('typecourse');
+//typesave
+Route::post('/typesave', [AdminController::class , 'typesave'])->name('typesave');
+
+
 }) ; 
 
 
