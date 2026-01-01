@@ -1,6 +1,8 @@
 <?php 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Models\ContentCourse;
+use App\Models\Course;
 use App\Models\typecourse;
 use App\Traits\GeneralTrait;
 use Exception;
@@ -96,6 +98,105 @@ public function typesave(Request $request){
     }
 
 }
+
+
+public function contentcourse(){
+        $courses = Course::all();
+
+    return view('admin/contentcourse', compact('courses')) ;   
+}
+
+
+public function course(){
+        $typeCourses = Typecourse::all();
+
+    return view('admin/course', compact('typeCourses')) ;   
+}
+
+
+
+public function coursesave(Request $request){
+
+  try{
+
+
+           $imagePath1 = null;
+if ($request->hasFile('image')) {
+    $imagePath1 = $request->file('image')->store('courses', 'public');
+}
+
+
+      $user = Auth::user();
+
+     Course::create([
+            'id_user' => $user->id,  
+            'id_type_course'=> $request->type_course_id, 
+            'title' => $request->title,
+            'image' => $imagePath1,
+            'stage'=> $request->stage , 
+
+        ]);
+
+
+
+                return redirect()->back()->with('message', 'content course saved successfully');
+                }catch(Exception $e) {
+                    return redirect()->back()->with('message' , $e->getMessage()) ;  
+}
+
+}
+
+
+
+
+
+
+public function contentcoursesave(Request $request){
+
+  try{
+
+
+           $imagePath1 = null;
+if ($request->hasFile('img1')) {
+    $imagePath1 = $request->file('img1')->store('courses', 'public');
+}
+
+ $imagePath2 = null;
+if ($request->hasFile('img2')) {
+    $imagePath2 = $request->file('img2')->store('courses', 'public');
+}
+
+ $imagePath3 = null;
+if ($request->hasFile('img3')) {
+    $imagePath3 = $request->file('img3')->store('courses', 'public');
+}
+
+      $user = Auth::user();
+
+     ContentCourse::create([
+            'id_user' => $user->id,  
+            'id_course' => $request->course_id,    
+            'def1' => $request->def1,
+            'eq1' => $request->eq1,
+            'img1'=> $imagePath1 , 
+            'def2' => $request->def2,
+            'eq2' => $request->eq2,
+            'img2'=> $imagePath2 , 
+            'def3' => $request->def3,
+            'eq3' => $request->eq3,
+            'img3'=> $imagePath3
+
+        ]);
+
+
+
+                return redirect()->back()->with('message', 'content course saved successfully');
+                }catch(Exception $e) {
+                    return redirect()->back()->with('message' , $e->getMessage()) ;  
+}
+
+}
+
 
 
 
