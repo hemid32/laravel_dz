@@ -8,7 +8,7 @@ class Course extends Model
 {
     
        protected $fillable = [
-         "id_user" , 
+         "id_user" , // user add this course 
          "title" ,
          "image" , 
          "stage" , 

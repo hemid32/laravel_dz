@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,10 +19,34 @@ Route::group([
 ], function ($router) {
 
     Route::post('login',[AuthController::class , 'login']);
+    Route::post('register', [AuthController::class , 'register']);
+
+});
+
+
+Route::group([
+
+    'middleware' => ['api-require' , 'jwt.auth'],
+    'prefix' => 'auth'
+
+], function ($router) {
+
     //updateProfile
     Route::post('updateprofile',[AuthController::class , 'updateProfile']);
     Route::post('logout', [AuthController::class , 'logout']);
-    Route::post('register', [AuthController::class , 'register']);
-    //Route::post('refresh', 'AuthController@refresh');
     Route::get('me', [AuthController::class , 'me']);
+});
+
+
+Route::group([
+
+    'middleware' =>[ 'api-require', 'jwt.auth' ],
+        'prefix' => 'course'
+
+
+], function ($router) {
+
+    Route::post('completecourse', [Course::class , 'completeCourse']);
+    Route::post('getCourses', [Course::class , 'getCoursesOfType']);
+
 });
