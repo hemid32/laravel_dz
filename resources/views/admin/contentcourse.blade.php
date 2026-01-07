@@ -129,6 +129,8 @@
     <script>
 document.getElementById('equationForm').addEventListener('submit', function (e) {
 
+
+
     const mf = document.getElementById('equationField');
     const mf2 = document.getElementById('equationField2');
     const mf3 = document.getElementById('equationField3');
@@ -140,9 +142,9 @@ document.getElementById('equationForm').addEventListener('submit', function (e) 
         return;
     }
 
-    const latex = mf.getValue('latex');
-    const latex2 = mf2.getValue('latex2');
-    const latex3 = mf3.getValue('latex');
+    const latex = (mf.getValue('latex'));
+    const latex2 = normalizeLatex(mf2.getValue('latex2'));
+    const latex3 = normalizeLatex(mf3.getValue('latex'));
 
     //console.log('LATEX:', latex); // للتأكد
 
@@ -152,6 +154,31 @@ document.getElementById('equationForm').addEventListener('submit', function (e) 
 
 
 });
+
+
+
+function normalizeLatex(latex) {
+    if (!latex) return latex;
+
+    return latex
+        // placeholders
+        .replace(/\\placeholder\{\}/g, '\\underline{\\hspace{1cm}}')
+
+        // class (MathLive only)
+        .replace(/\\class\{.*?\}\{(.*?)\}/g, '$1')
+
+        // bbox
+        .replace(/\\bbox\{.*?\}\{(.*?)\}/g, '$1')
+
+        // spacing غير القياسي
+        .replace(/\\kern\s*[\d.]+em/g, '')
+
+        // حذف أوامر فارغة
+        .replace(/\\,/g, ' ')
+        .replace(/\\!/g, '');
+}
+
+
 </script>
 
        </div>

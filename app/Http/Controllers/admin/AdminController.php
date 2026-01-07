@@ -173,7 +173,10 @@ if ($request->hasFile('img3')) {
 
       $user = Auth::user();
 
-     ContentCourse::create([
+     ContentCourse::updateOrCreate( [
+                'id_course' => $request->course_id, 
+
+     ] , [
             'id_user' => $user->id,  
             'id_course' => $request->course_id,    
             'def1' => $request->def1,

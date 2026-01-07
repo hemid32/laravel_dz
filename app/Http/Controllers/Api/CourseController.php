@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompleteCourse;
+use App\Models\Course;
+use App\Models\Typecourse;
 use App\Traits\GeneralTrait;
 use Exception;
 use GuzzleHttp\ClientTrait;
@@ -11,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class Course extends Controller
+class CourseController extends Controller
 {
 
     use GeneralTrait;  
@@ -66,6 +68,43 @@ class Course extends Controller
 
     }
 
-    
+
+    public function getDetailCourse(Request $request){
+
+                try{
+         
+
+                    $idCourse = $request->id_course ;   
+    $course = Course::with('content')->findOrFail($idCourse);
+
+
+        return $this->returnData('data' , $course) ;   
+        }catch(Exception $e) {
+            return $this->returnError('444' , $e->getMessage()) ; 
+        }
+
+
+
+    }
+
+    //getTypecourses
+
+        public function getTypecourses(Request $request){
+
+                try{
+         
+
+                    $idCourse = $request->id_course ;   
+              $types = Typecourse::all();
+
+
+        return $this->returnData('data' , $types) ;   
+        }catch(Exception $e) {
+            return $this->returnError('444' , $e->getMessage()) ; 
+        }
+
+
+
+    }
 
 }

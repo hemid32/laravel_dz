@@ -33,6 +33,9 @@ Route::post('/contentcoursesave', action: [AdminController::class , 'contentcour
 //coursesave
 Route::get('/course', action: [AdminController::class , 'course'])->name('course');
 
+
+
+
 Route::post('/coursesave', [AdminController::class , 'coursesave'])->name('coursesave');
 
 Route::post('/typesave', [AdminController::class , 'typesave'])->name('typesave');
