@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\Exercise;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -45,11 +46,14 @@ Route::group([
 
 
 ], function ($router) {
-
     Route::post( 'completecourse', [CourseController::class , 'completeCourse']);
     Route::get('getCourses', [CourseController::class , 'getCoursesOfType']);
     //
     Route::get('getDetailCourse', [CourseController::class , 'getDetailCourse']);
     //getTypecourses
     Route::get('getTypecourses', [CourseController::class , 'getTypecourses']);
+    //completeexercise
+    Route::post( 'completeexercise', [Exercise::class , 'completeExercise']);
+    Route::get('getExerciseOfCourse', [Exercise::class , 'getExerciseOfCourse']);
+
 });

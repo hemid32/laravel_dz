@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
      
-     <div class="row align-items-center">
+     <div class="row align-items-center mt-4">
 
         <div class="col-md-4">
         <div class="card">
@@ -54,6 +54,42 @@
      </div>
       
 
+     <div class="row align-items-center mt-4">
+
+        <div class="col-md-4">
+        <div class="card">
+  <h5 class="card-header">add Exercise</h5>
+  <div class="card-body">
+    <h5 class="card-title">this is for add new type course</h5>
+    <p class="card-text">add title and description and image course</p>
+    <a href="/formAddExercises" class="btn btn-primary" target="_blank" >Go Type</a>
+  </div>
+</div>
+        </div>
+
+
+             
+                <div class="col-md-4">
+        <div class="card">
+  <h5 class="card-header">add content Exercise</h5>
+  <div class="card-body">
+    <h5 class="card-title">this is for add new type course</h5>
+    <p class="card-text">add title and description and image course</p>
+    <a href="/contentexercise" class="btn btn-primary" target="_blank" >Go Type</a>
+  </div>
+</div>
+        </div>
+   <div class="col-md-4">
+        <div class="card">
+  <h5 class="card-header">add  course</h5>
+  <div class="card-body">
+    <h5 class="card-title">this is for add new  course</h5>
+    <p class="card-text">add title and description and image course</p>
+    <a href="/course" class="btn btn-primary" target="_blank" >Go add cours</a>
+  </div>
+</div>
+        </div>
+     </div>
 
 </body>
 </html>

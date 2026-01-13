@@ -23,16 +23,16 @@
  {{ session('message') }}</div>
  @endif
 
- <form id="equationForm" method="POST" action="{{ route('contentcoursesave') }}" enctype="multipart/form-data">
+ <form id="equationForm2" method="POST" action="{{ route('contentexercisesave') }}" enctype="multipart/form-data">
      @csrf
 
 
      <div class="mb-3">
-    <label class="form-label">Course Type</label>
-    <select name="course_id" class="form-select" required>
+    <label class="form-label">shois exercise for this content</label>
+    <select name="exercise_id" class="form-select" required>
         <option value="">-- Select Course Type --</option>
 
-        @foreach ($courses as $type)
+        @foreach ($exercises as $type)
             <option value="{{ $type->id }}">
                 {{ $type->title }}
             </option>
@@ -122,18 +122,75 @@
 
 
 
+
+
+
+
+
+
+                       <h1> Choices. </h1>
+
+
+  <div class="mb-3">
+         <label>choice1</label>
+
+<math-field id="equationFieldChoice1"
+            style="width:100%; border:1px solid #ccc; padding:10px;">
+</math-field>
+
+<input type="hidden" name="choice1" id="latexChoice1" >
+            </div>
+
+  <div class="mb-3">
+         <label>choice2</label>
+
+<math-field id="equationFieldChoice2"
+            style="width:100%; border:1px solid #ccc; padding:10px;">
+</math-field>
+
+<input type="hidden" name="choice2" id="latexChoice2" >
+            </div>
+
+
+  <div class="mb-3">
+         <label>choice3</label>
+
+<math-field id="equationFieldChoice3"
+            style="width:100%; border:1px solid #ccc; padding:10px;">
+</math-field>
+
+<input type="hidden" name="choice3" id="latexChoice3"  >
+            </div>
+
+
+              <div class="mb-3">
+         <label>choice4</label>
+
+<math-field id="equationFieldChoice4"
+            style="width:100%; border:1px solid #ccc; padding:10px;">
+</math-field>
+
+<input type="hidden" name="choice4" id="latexChoice4"   >
+            </div>
+
+
                    <button type="submit" class="btn btn-primary w-100">حفظ</button>
 
     </form>
 
     <script>
-document.getElementById('equationForm').addEventListener('submit', function (e) {
+document.getElementById('equationForm2').addEventListener('submit', function (e) {
 
 
 
     const mf = document.getElementById('equationField');
     const mf2 = document.getElementById('equationField2');
     const mf3 = document.getElementById('equationField3');
+
+    const ch1 = document.getElementById('equationFieldChoice1');
+    const ch2 = document.getElementById('equationFieldChoice2');
+    const ch3 = document.getElementById('equationFieldChoice3');
+    const ch4 = document.getElementById('equationFieldChoice4');
 
     // تأكد أن MathLive محمّل
     if (!mf || typeof mf.getValue !== 'function') {
@@ -144,7 +201,13 @@ document.getElementById('equationForm').addEventListener('submit', function (e) 
 
     const latex = normalizeLatex(mf.getValue('latex'));
     const latex2 = normalizeLatex(mf2.getValue('latex2'));
-    const latex3 = normalizeLatex(mf3.getValue('latex'));
+    const latex3 = normalizeLatex(mf3.getValue('latex3'));
+
+
+        const choi1 = normalizeLatex(ch1.getValue('latexChoice1'));
+        const choi2 = normalizeLatex(ch2.getValue('latexChoice2'));
+        const choi3 = normalizeLatex(ch3.getValue('latexChoice3'));
+        const choi4 = normalizeLatex(ch4.getValue('latexChoice4'));
 
     //console.log('LATEX:', latex); // للتأكد
 
@@ -152,6 +215,10 @@ document.getElementById('equationForm').addEventListener('submit', function (e) 
     document.getElementById('latex2').value = latex2;
     document.getElementById('latex3').value = latex3;
 
+    document.getElementById('latexChoice1').value = choi1;
+    document.getElementById('latexChoice2').value = choi2;
+    document.getElementById('latexChoice3').value = choi3;
+    document.getElementById('latexChoice4').value = choi4;
 
 });
 

@@ -1,8 +1,12 @@
 <?php 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Exercise;
+use App\Models\Choice;
 use App\Models\ContentCourse;
+use App\Models\ContentExersice;
 use App\Models\Course;
+use App\Models\Exercise as ModelsExercise;
 use App\Models\typecourse;
 use App\Traits\GeneralTrait;
 use Exception;
@@ -69,6 +73,16 @@ public function typecourse(){
 }
 
 
+public function formAddExercises(){
+
+
+            $courses = Course::all();
+
+    return view('admin/formAddExercises', compact('courses')) ;   
+
+}
+
+
 
 public function typesave(Request $request){
      try {
@@ -104,6 +118,13 @@ public function contentcourse(){
         $courses = Course::all();
 
     return view('admin/contentcourse', compact('courses')) ;   
+}
+
+
+public function contentexercise(){
+        $exercises =ModelsExercise::all();
+
+    return view('admin/contentexercise', compact('exercises')) ;   
 }
 
 
@@ -202,7 +223,104 @@ if ($request->hasFile('img3')) {
 
 
 
+public function contentexercisesave(Request $request){
 
+  try{
+
+
+           $imagePath1 = null;
+if ($request->hasFile('img1')) {
+    $imagePath1 = $request->file('img1')->store('courses', 'public');
+}
+
+ $imagePath2 = null;
+if ($request->hasFile('img2')) {
+    $imagePath2 = $request->file('img2')->store('courses', 'public');
+}
+
+ $imagePath3 = null;
+if ($request->hasFile('img3')) {
+    $imagePath3 = $request->file('img3')->store('courses', 'public');
+}
+
+      $user = Auth::user();
+
+    $content  =  ContentExersice::updateOrCreate( [
+                'id_exercise' => $request->exercise_id, 
+
+     ] , [
+            'id_user' => $user->id,  
+            'id_exrcise' => $request->exercise_id,    
+            'def1' => $request->def1,
+            'eq1' => $request->eq1,
+            'img1'=> $imagePath1 , 
+            'def2' => $request->def2,
+            'eq2' => $request->eq2,
+            'img2'=> $imagePath2 , 
+            'def3' => $request->def3,
+            'eq3' => $request->eq3,
+            'img3'=> $imagePath3
+
+        ]);
+
+
+        Choice::updateOrCreate([
+                'id_content' => $content->id, 
+
+        ] , [
+
+                'id_content' => $content->id, 
+                'choice1' => $request->choice1 , 
+                'choice2' => $request->choice2 , 
+                'choice3' => $request->choice3 , 
+                'choice4' => $request->choice4 , 
+
+
+        ]) ; 
+
+
+
+                return redirect()->back()->with('message', 'content course saved successfully');
+                }catch(Exception $e) {
+                    return redirect()->back()->with('message' , $e->getMessage()) ;  
+}
+
+}
+
+
+
+
+public function exercisesave(Request $request){
+
+  try{
+
+
+           $imagePath1 = null;
+if ($request->hasFile('image')) {
+    $imagePath1 = $request->file('image')->store('courses', 'public');
+}
+
+
+      $user = Auth::user();
+
+     ModelsExercise::create([
+            'id_user' => $user->id,  
+            'id_course'=> $request->course_id, 
+            'title' => $request->title,
+            'time' => $request->time  ,   
+            'image' => $imagePath1,
+            'stage'=> $request->stage , 
+
+        ]);
+
+
+
+                return redirect()->back()->with('message', 'content course saved successfully');
+                }catch(Exception $e) {
+                    return redirect()->back()->with('message' , $e->getMessage()) ;  
+}
+
+}
 
 
 

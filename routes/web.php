@@ -27,6 +27,7 @@ Route::get('/logout', [AdminController::class , 'logout'])->name('logout');
 
 Route::get('/typecourse', action: [AdminController::class , 'typecourse'])->name('typecourse');
 
+
 Route::get('/contentcourse', action: [AdminController::class , 'contentcourse'])->name('contentcourse');
 Route::post('/contentcoursesave', action: [AdminController::class , 'contentcoursesave'])->name('contentcoursesave');
 
@@ -39,6 +40,13 @@ Route::get('/course', action: [AdminController::class , 'course'])->name('course
 Route::post('/coursesave', [AdminController::class , 'coursesave'])->name('coursesave');
 
 Route::post('/typesave', [AdminController::class , 'typesave'])->name('typesave');
+// exercises
+
+
+Route::get('/formAddExercises', action: [AdminController::class , 'formAddExercises'])->name('formAddExercises');
+Route::post('/exercisesave', [AdminController::class , 'exercisesave'])->name('exercisesave');
+Route::get('/contentexercise', action: [AdminController::class , 'contentexercise'])->name('contentexercise');
+Route::post('/contentexercisesave', action: [AdminController::class , 'contentexercisesave'])->name('contentexercisesave');
 
 
 }) ; 
