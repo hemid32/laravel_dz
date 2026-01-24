@@ -52,7 +52,18 @@ Route::group([
     Route::get('getDetailCourse', [CourseController::class , 'getDetailCourse']);
     //getTypecourses
     Route::get('getTypecourses', [CourseController::class , 'getTypecourses']);
-    //completeexercise
+
+});
+
+
+Route::group([
+
+    'middleware' =>[ 'api-require', 'jwt.auth' ],
+        'prefix' => 'exercise'
+
+
+], function ($router) {
+
     Route::post( 'completeexercise', [Exercise::class , 'completeExercise']);
     Route::get('getExerciseOfCourse', [Exercise::class , 'getExerciseOfCourse']);
 
