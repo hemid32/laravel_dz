@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\CompleteExercise;
+use App\Models\Course;
+use App\Models\CurrentExercise;
 use App\Models\Exercise as ModelsExercise;
+use App\Models\Point;
 use App\Traits\GeneralTrait;
 use Exception;
 use Illuminate\Http\Request;
@@ -67,6 +70,108 @@ class Exercise extends Controller
         }
 
     }
+
+
+
+    public function getCurrentExercise( Request $request ){
+       
+    try{
+                 $user = JWTAuth::parseToken()->authenticate();
+
+    $exists = CurrentExercise::
+    where('id_user', $user->id)
+    ->where('id_type_course', $request->id_type_course)
+    ->exists();
+
+    if (!$exists) {
+    $course = Course:: 
+        where('id_type_course', $request->id_type_course)
+        ->orderBy('stage', 'asc')
+        ->first();
+    return  $this->returnData('data' , $course); // قد يكون null إذا لا يوجد أي كورس
+    }
+// المرحلة الحالية
+$currentStage = CurrentExercise::join('courses', 'courses.id', '=', 'current_exercises.id_course')
+    ->where('current_exercises.id_user', $user->id)
+    ->where('current_exercises.id_type_course', $request->id_type_course)
+    ->value('courses.stage');
+// الكورس التالي
+$course_result =  Course::where('id_type_course', $request->id_type_course)
+    ->where('stage', '>', $currentStage)
+    ->orderBy('stage', 'asc')
+    ->first(); // null إذا لا يوجد التالي
+      
+  return $this->returnData('data' , $course_result) ;   
+
+    }catch(Exception $e) {
+     return $this->returnError('error' , $e->getMessage()) ;   
+    }
+
+
+    }
+    
+    public function currentExerciseSave(Request $request){
+          
+        try{
+        $user = JWTAuth::parseToken()->authenticate();
+
+        $request->validate([
+            'id_course' => 'required',
+            'id_type_course' => "required" ,  
+        
+        ]);
+
+        CurrentExercise::updateOrCreate(
+            [
+                'id_course' => $request->id_course ,  
+                'id_user' => $user->id  ,   
+            ] , 
+            [
+                'id_user' => $user->id ,   
+                'id_course'  => $request->id_course ,  
+                'id_type_course' => $request->id_type_course 
+
+            ]
+        ); 
+        return $this->returnSuccessMessage('we change current curse to new') ; 
+    }catch(Exception $e){
+        return $this->returnError('444' , $e->getMessage()) ; 
+    }
+    }
+
+
+    public function savePoint(Request $request) {
+                try{
+        $user = JWTAuth::parseToken()->authenticate();
+
+        $request->validate([
+            'point'     => 'required',
+        ]);
+        $points = (int) $request->point;
+        $query = Point::where('id_user', $user->id);
+
+        if ($points < 0) {
+         $query->where('point', '>=', abs($points));
+         }
+        $updated = $query->update([
+            'point' => DB::raw("point + ($points)")
+        ]);
+
+       if ($updated === 0) {
+        return  $this->returnError('45' , 'الرصيدغير كافي');
+        }
+
+
+        return $this->returnData('data' , Point::where('id_user', $user->id)->value('point')); 
+    }catch(Exception $e){
+        return $this->returnError('444' , $e->getMessage()) ; 
+    }
+
+    }
+
+
+
+
 
 
 

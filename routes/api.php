@@ -66,5 +66,9 @@ Route::group([
 
     Route::post( 'completeexercise', [Exercise::class , 'completeExercise']);
     Route::get('getExerciseOfCourse', [Exercise::class , 'getExerciseOfCourse']);
+    Route::get('getCurrentExercise', [Exercise::class , 'getCurrentExercise']);
+    Route::post( 'currentExerciseSave', [Exercise::class , 'currentExerciseSave']);
+    Route::post( 'savePoint', [Exercise::class , 'savePoint']);
+
 
 });

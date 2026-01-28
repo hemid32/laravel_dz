@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Point extends Model
 {
@@ -28,6 +29,11 @@ class Point extends Model
         return $this->belongsTo(Point::class, 'id_user');
 
     }
+
+
+
+
+
 
     //
 }
